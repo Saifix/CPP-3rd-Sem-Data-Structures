@@ -1,0 +1,131 @@
+#include <iostream> 
+using namespace std;
+
+class Heap {
+public:
+	void heapify(int [], int, int);
+	void heapSort(int [], int);
+	void deleteRoot(int[], int, int&);
+	void insertNode(int[], int&, int);
+	void Display(int[], int);
+	bool Search(int[], int, int);
+};
+
+
+void main()
+{
+	Heap h;
+	int maxVal, n = 1;
+	int arr[50];
+	cout << "Enter maximum number of values: ";
+	cin >> maxVal;
+	for (int i = 0; i < maxVal; i++) {
+		cout << "Enter value#" << i + 1 << ": ";
+		cin >> arr[i];
+	}
+	cout << "The data has been inserted";
+	while (n != 0) {
+		cout << "\nYou can perform following operations: ";
+		cout << "\n1. Heap Sort";
+		cout << "\n2. Insert Node";
+		cout << "\n3. Delete Node";
+		cout << "\n4. Display";
+		cout << "\nEnter option no: ";
+		cin >> n;
+		if (n == 1) {
+			h.heapSort(arr, maxVal);
+		}
+		else if (n == 2) {
+			int val;
+			cout << "Enter value: ";
+			cin >> val;
+			h.insertNode(arr, maxVal, val);
+		}
+		else if (n == 3) {
+			int val;
+			cout << "Enter value to delete: ";
+			cin >> val;
+			if (h.Search(arr, maxVal, val)) {
+				h.deleteRoot(arr, val, maxVal);
+			}
+			else
+				cout << "Value not in array\n";
+		}
+		else if (n == 4) {
+			h.Display(arr, maxVal);
+		}
+		system("pause");
+		system("CLS");
+	}
+}
+
+void Heap::heapify(int arr[], int n, int root)
+{
+	int largest = root;
+	int l = 2 * root + 1; 
+	int r = 2 * root + 2; 
+
+	if (l < n && arr[l] > arr[largest])
+		largest = l;
+
+	if (r < n && arr[r] > arr[largest])
+		largest = r;
+
+	if (largest != root)
+	{
+		swap(arr[root], arr[largest]);
+
+		heapify(arr, n, largest);
+	}
+}
+
+void Heap::heapSort(int arr[], int n)
+{
+	for (int i = n / 2 - 1; i >= 0; i--)
+		heapify(arr, n, i);
+
+	for (int i = n - 1; i >= 0; i--)
+	{
+		swap(arr[0], arr[i]);
+		heapify(arr, i, 0);
+	}
+}
+
+void Heap:: deleteRoot(int arr[], int v, int& n)
+{
+	int i = 0;
+	int lastElement = arr[n - 1];
+	for (i = 0; i < n; i++) {
+		if (arr[i] == v) {
+			arr[i] = lastElement;
+			break;
+		}
+	}
+	n = n - 1;
+	heapSort(arr, n);
+}
+
+void Heap::insertNode(int arr[], int& n, int Key)
+{
+	n = n + 1;
+	arr[n - 1] = Key;
+	heapSort(arr, n);
+}
+
+void Heap::Display(int arr[], int n)
+{
+	for (int i = 0; i < n; i++)
+		cout << arr[i] << " ";
+
+	cout << "\n";
+}
+
+bool Heap::Search(int arr[], int n, int v)
+{
+	for (int i = 0; i < n; i++) {
+		if (arr[i] == v)
+			return true;
+	}
+	return false;
+
+}

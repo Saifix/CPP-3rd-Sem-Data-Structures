@@ -1,0 +1,230 @@
+#include<iostream>
+using namespace std;
+struct node
+{
+	int data;
+	node* next;
+};
+class linked_list
+{
+private:
+	node* head, * last;
+public:
+	linked_list()
+	{
+		head = NULL;
+		last = NULL;
+	}
+	void createnode(int value)
+	{
+		node* temp = new node;
+		temp->data = value;
+		temp->next = NULL;
+		if (head == NULL)
+		{
+			head = temp;
+			last = temp;
+		}
+		else
+		{
+			last->next = temp;
+			last = temp;
+		}
+	}
+	void insert_start(int value)
+	{
+		node* temp = new node;
+		temp->data = value;
+		temp->next = head;
+		head = temp;
+	}
+	void insert_position(int pos, int value)
+	{
+		node* pre = new node;
+		node* cur = new node;
+		node* temp = new node;
+		cur = head;
+		for (int i = 1; i < pos; i++)
+		{
+			pre = cur;
+			cur = cur->next;
+		}
+		temp->data = value;
+		pre->next = temp;
+		temp->next = cur;
+
+	}
+	void display()
+	{
+		node* temp = new node;
+		temp = head;
+		while (temp != NULL)
+		{
+			cout << temp->data << "\t";
+			temp = temp->next;
+		}
+	}
+	void delete_first()
+	{
+		node* temp = new node;
+		temp = head;
+		head = head->next;
+		delete temp;
+	}
+	void delete_last()
+	{
+		node* current = new node;
+		node* previous = new node;
+		current = head;
+		while (current->next != NULL)
+		{
+			previous = current;
+			current = current->next;
+		}
+		last = previous;
+		previous->next = NULL;
+		delete current;
+	}
+	void delete_position(int pos)
+	{
+		node* current = new node;
+		node* previous = new node;
+		current = head;
+		for (int i = 1; i < pos; i++)
+		{
+			previous = current;
+			current = current->next;
+		}
+		previous->next = current->next;
+		delete current;
+	}
+	void search(node* ptr,int x)
+	{
+		if (ptr == NULL)
+		{
+			cout << "Element not found" << endl;
+		}
+		else if (ptr->data == x)
+		{
+				cout << "Element found" << endl;
+		}
+		else
+		{
+			search(ptr->next, x);
+		}
+	}
+	void found()
+	{
+		int x;
+		cout << "Enter the value to search : ";
+		cin >> x;
+		search(head, x);
+
+	}
+	void reverse()
+	{ 
+		node* current = head;
+		node* prev = NULL, * next = NULL;
+		while (current != NULL) {
+			next = current->next;
+			current->next = prev;
+			prev = current;
+			current = next;
+		}
+		head = prev;
+		node* temp = new node;
+		temp = head;
+		while (temp != NULL)
+		{
+			cout << temp->data << "\t";
+			temp = temp->next;
+		}
+	}
+};
+int main()
+{
+	int choice, again;
+	linked_list obj;
+	for (int i = 1; i < 6; i++)
+	{
+		obj.createnode(i);
+	}
+	cout<<"Which Operation do you want to perform\n1)Create a Node\n2)Insert something in start\n3)Insert any value at any point\n4)Delete first element\n5)Delete last element\n6)Delete any value at any positon\n7)Search a number\n8)Display reversed linked list\n9)Display linked list"<<endl;
+	
+	do
+	{
+		cout << endl;
+		cout << "Please enter from given numbers : ";
+		cin >> choice;
+		while (choice < 1 || choice > 9)
+		{
+			cout << "Please enter from given numbers : ";
+			cin >> choice;
+		}
+		if (choice == 1) 
+		{
+			int val;
+			cout << "Enter the value of node : ";
+			cin >> val;
+			obj.createnode(val);
+		}
+		if (choice == 2)
+		{
+			int val1;
+			cout << "Enter the value of node : ";
+			cin >> val1;
+			obj.insert_start(val1);
+		}
+		if (choice == 3)
+		{
+			int val2,pos;
+			cout << "Enter the position of node : ";
+			cin >> pos;
+			cout << "Enter the value of node : ";
+			cin >> val2;
+			obj.insert_position(pos, val2);
+		}
+		if (choice == 4)
+		{
+			cout << "First node deleted" << endl;
+			obj.delete_first();
+		}
+		if (choice == 5)
+		{
+			cout << "Last node deleted" << endl;
+			obj.delete_last();
+		}
+		if (choice == 6)
+		{
+			int pos2;
+			cout << "Enter the position of node : ";
+			cin >> pos2;
+			obj.delete_position(pos2);
+			cout << "Node at position " << pos2 << " has been deleted" << endl;
+		}
+		if (choice == 7)
+		{
+			obj.found();
+		}
+		if (choice == 8)
+		{
+			cout << "Printing linked list in reverse order :" << endl;
+			obj.reverse();
+		}
+		if (choice == 9) 
+		{
+			cout << "Displaying whole link list" << endl;
+			obj.display();
+			cout << endl;
+		}
+		cout << endl;
+		cout << "Do you want to do any other operation(1-Yes/0-No)";
+		cin >> again;
+		while (again < 0 || again>1)
+		{
+			cout << "Please enter 1-Yes or 0-No)";
+			cin >> again;
+		}
+	} while (again==1);
+	return 0;
+}

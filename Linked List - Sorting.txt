@@ -1,0 +1,92 @@
+#include <iostream>
+using namespace std;
+class Node {
+
+public:
+	int data;
+	Node* next;
+	Node* prev;
+};
+void swap(int* a, int* b)
+{
+	int t = *a; *a = *b; *b = t;
+}
+Node* lastNode(Node* end)
+{
+	while (end && end->next)
+		end = end->next;
+
+	return end;
+}
+Node* partition(Node* l, Node* h)
+{
+	int x = h->data;
+	Node* i = l->prev;
+	for (Node* j = l; j != h; j = j->next)
+	{
+		if (j->data <= x)
+		{
+			i = (i == NULL) ? l : i->next;
+			swap(&(i->data), &(j->data));
+		}
+	}
+	i = (i == NULL) ? l : i->next;
+	swap(&(i->data), &(h->data));
+	return i;
+}
+void Sorting1(Node* l, Node* h)
+{
+	if (h != NULL && l != h && l != h->next)
+	{
+		Node* p = partition(l, h);
+		Sorting1(l, p->prev);
+		Sorting1(p->next, h);
+	}
+
+}
+void Sorting2(Node* head)
+{
+	Node* h = lastNode(head);
+	Sorting1(head, h);
+}
+void print(Node* head)
+{
+	while (head)
+	{
+		cout << head->data << " ";
+		head = head->next;
+	}
+	cout << endl;
+}
+void insert(Node** head_ref, int new_data)
+{
+	Node* new_node = new Node;
+	new_node->data = new_data;
+	new_node->prev = NULL;
+	new_node->next = (*head_ref);
+	if ((*head_ref) != NULL) (*head_ref)->prev = new_node;
+	(*head_ref) = new_node;
+}
+
+int main()
+{
+	int num;
+	Node* a = NULL;
+	insert(&a, 9);
+	insert(&a, 55);
+	insert(&a, 3);
+	insert(&a, 4);
+	insert(&a, 29);
+	cout << "Linked List before sorting \n";
+	print(a);
+	Sorting2(a);
+	cout << "Linked List after sorting \n";
+	print(a);
+	cout << "Insert any other number : ";
+	cin >> num;
+	insert(&a, num);
+	Sorting2(a);
+	cout << "Linked List after sorting \n";
+	print(a);
+	system("pause");
+}

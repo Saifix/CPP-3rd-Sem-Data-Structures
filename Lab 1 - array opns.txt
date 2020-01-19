@@ -1,0 +1,93 @@
+#include <iostream>
+using namespace std;
+
+int sum_from_to(int first, int last) {
+int i, partial_sum = 0;
+if (first <= last) {
+for (i = first; i <= last; ++i){
+partial_sum += i;
+}
+}
+else {
+for (i = first; i >= last; --i) {
+partial_sum += i;
+}
+}
+return partial_sum;
+}
+
+int g_c_d(int a, int b) {
+if (a <= 0 || b <= 0) { // a parameter is not positive
+return 0; // exit and return the error sentinel
+}
+int trial_divisor;
+trial_divisor = ( a <= b ? a : b ); // set it to the smaller
+while (a % trial_divisor != 0 || b % trial_divisor != 0) {
+--trial_divisor;
+}
+return trial_divisor;
+}
+
+void swap_floats(float & a, float & b) {
+float temp = a;
+a = b;
+b = temp;
+}
+
+void reverse(float a[], int n) {
+int i = 0, j = n - 1;
+while (i < j) {
+float temp = a[i++];
+a[i++] = a[j--];
+a[j--] = temp;
+}
+}
+
+float sum(const float a[], int n) {
+float sum_so_far = 0.0;
+int i;
+for (i = 0; i < n; ++i) {
+sum_so_far += a[i];
+}
+return sum_so_far;
+}
+
+int location_of_largest(const int a[], int n) {
+int best = 0; // Location of the largest so far.
+int i;
+for (i = 1; i < n; ++i) { // Start comparing at the second cell.
+if (a[i] > a[best]) {
+best = i;
+}
+}
+return best;
+}
+
+void rotate_right(float a[], int n) {
+float temp = a[n-1]; // Hold the contents of the last cell.
+int i;
+for (i = n - 1; i >= 1; --i) {
+a[i] = a[i-1];
+}
+a[0] = temp;
+}
+
+void eliminate_duplicates(int a[], int & n) {
+int last_unique = 0; // Keeps track of the end of the subarray of integers known to be all different.
+int i;
+for (i = 1; i < n; ++i) { // Start i at the second cell (number 1).
+// Determine whether a[i] is already present among the integers in cells a[0],...,a[last_unique].
+int j = 0;
+while (j <= last_unique && a[i] != a[j]) {
+++j;
+}
+if (j > last_unique) { // then a[i] is not present earlier,
+a[++last_unique] = a[i]; // so put a[i] into the list of all different integers.
+}
+}
+n = last_unique + 1; // Modify n so that it tells the number of distinct integers in the processed array.
+}
+
+int main() {
+return 0;
+}
